@@ -49,6 +49,7 @@ public class GetStarted extends FragmentActivity  implements
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Plus.API, Plus.PlusOptions.builder().build())
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
@@ -96,7 +97,11 @@ public class GetStarted extends FragmentActivity  implements
         mSignOutButton.setEnabled(true);
         isSigningClicked = false;
         Person currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-        Toast.makeText(this, currentUser.getDisplayName() + " is connected!" , Toast.LENGTH_LONG).show();
+        String prefix = "Mrs. ";
+        if(currentUser.getGender() == Person.Gender.MALE){
+            prefix = "Mr. ";
+        }
+        Toast.makeText(this, prefix + currentUser.getDisplayName() + " age "+currentUser.getBirthday()+" is connected!" , Toast.LENGTH_LONG).show();
     }
 
     @Override
